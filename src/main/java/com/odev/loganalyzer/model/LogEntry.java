@@ -1,10 +1,10 @@
 package com.odev.loganalyzer.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public class LogEntry {
     private final String ipAddress;
-    private final LocalDateTime timestamp;
+    private final OffsetDateTime timestamp;
     private final String requestMethod;
     private final String endpoint;
     private final int responseCode;
@@ -12,7 +12,7 @@ public class LogEntry {
 
     public LogEntry(
             String ipAddress,
-            LocalDateTime timestamp,
+            OffsetDateTime timestamp,
             String requestMethod,
             String endpoint,
             int responseCode,
@@ -30,7 +30,7 @@ public class LogEntry {
         return ipAddress;
     }
 
-    public LocalDateTime getTimestamp() {
+    public OffsetDateTime getTimestamp() {
         return timestamp;
     }
 

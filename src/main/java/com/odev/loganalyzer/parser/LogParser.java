@@ -1,7 +1,10 @@
-package com.odev.loganalyzer.model;
+package com.odev.loganalyzer.parser;
 
-import java.time.LocalDateTime;
+import com.odev.loganalyzer.model.LogEntry;
+
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -9,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class LogParser {
     private static final Pattern LOG_PATTERN = Pattern.compile(
-            "^(\\S+) - - \\[(.*?)] \"(GET|POST|PUT|DELETE|PATCH) (.*?) HTTP/.*\" (\\d{3}) (\\d+)$"
+            "^(\\S+) - - \\[(.*?)] \"(GET|POST|PUT|DELETE|PATCH) ([^ ]+) HTTP/.*\" (\\d{3}) (\\d+)$"
     );
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z", Locale.ENGLISH);
@@ -22,7 +25,7 @@ public class LogParser {
 
         try {
             String ipAddress = matcher.group(1);
-            LocalDateTime timestamp = LocalDateTime.parse(matcher.group(2), DATE_FORMATTER);
+            OffsetDateTime timestamp = OffsetDateTime.parse(matcher.group(2), DATE_FORMATTER);
             String requestMethod = matcher.group(3);
             String endpoint = matcher.group(4);
             int responseCode = Integer.parseInt(matcher.group(5));
@@ -31,7 +34,7 @@ public class LogParser {
             LogEntry logEntry = new LogEntry(ipAddress, timestamp, requestMethod, endpoint, responseCode, responseSize);
 
             return Optional.of(logEntry);
-        }catch (Exception e){
+        }catch (NumberFormatException | DateTimeParseException e){
             return Optional.empty();
         }
     }

@@ -1,7 +1,6 @@
 package com.odev.loganalyzer.parser;
 
 import com.odev.loganalyzer.model.LogEntry;
-import com.odev.loganalyzer.model.LogParser;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -47,5 +46,23 @@ public class LogParserTest {
         LogEntry entry = result.get();
         assertEquals("POST", entry.getRequestMethod());
         assertEquals(404, entry.getResponseCode());
+    }
+
+    @Test
+    void shouldHandleMalformedNumbers() {
+        String line = "192.168.1.10 - - [29/Apr/2026:10:15:32 +0000] \"GET /api/products HTTP/1.1\" ABC XYZ";
+
+        Optional<LogEntry> result = logParser.parse(line);
+
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void shouldParseTimestampCorrectly() {
+        String line = "192.168.1.10 - - [29/Apr/2026:10:15:32 +0000] \"GET /api/products HTTP/1.1\" 200 1024";
+
+        Optional<LogEntry> result = logParser.parse(line);
+
+        assertTrue(result.isPresent());
     }
 }
