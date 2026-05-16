@@ -25,7 +25,7 @@ public class FileReaderUtil {
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                logParser.parse(line).ifPresent( logEntries::add );
+                logParser.parse(line).ifPresent(logEntries::add);
             }
         } catch (IOException e) {
             throw new RuntimeException("Error reading file", e);

@@ -1,7 +1,15 @@
 package com.odev.loganalyzer.app;
 
+import com.odev.loganalyzer.model.LogEntry;
+import com.odev.loganalyzer.util.FileReaderUtil;
+
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello and welcome to Java!");
+        FileReaderUtil reader = new FileReaderUtil();
+        List<LogEntry> logEntries = reader.readLogs("sample.log");
+
+        logEntries.forEach(System.out::println);
     }
 }
