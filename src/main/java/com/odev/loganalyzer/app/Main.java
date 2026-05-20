@@ -1,6 +1,7 @@
 package com.odev.loganalyzer.app;
 
 import com.odev.loganalyzer.model.LogEntry;
+import com.odev.loganalyzer.service.LogAnalyzer;
 import com.odev.loganalyzer.util.FileReaderUtil;
 
 import java.util.List;
@@ -10,6 +11,11 @@ public class Main {
         FileReaderUtil reader = new FileReaderUtil();
         List<LogEntry> logEntries = reader.readLogs("sample.log");
 
-        logEntries.forEach(System.out::println);
+        LogAnalyzer analyzer = new LogAnalyzer(logEntries);
+
+        //logEntries.forEach(System.out::println);
+        System.out.println("Total Requests: " + analyzer.countTotalRequest());
+        System.out.println("Status Code Counts: " + analyzer.countStatusCodes());
+        System.out.println("Requests by IP Address: " + analyzer.countRequestsByIpAddress());
     }
 }

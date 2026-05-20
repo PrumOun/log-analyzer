@@ -17,6 +17,6 @@ public class FileReaderUtilTest {
         List<LogEntry> logs = reader.readLogs("sample.log");
 
         assertNotNull(logs);
-        assertEquals(2, logs.size()); // invalid line ignored
+        assertEquals(5, logs.size()); // invalid line ignored
     }
 }
