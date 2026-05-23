@@ -17,5 +17,14 @@ public class Main {
         System.out.println("Total Requests: " + analyzer.countTotalRequest());
         System.out.println("Status Code Counts: " + analyzer.countStatusCodes());
         System.out.println("Requests by IP Address: " + analyzer.countRequestsByIpAddress());
+
+        System.out.println("Top IPs:");
+        analyzer.getTopEndpoints(1).forEach(System.out::println);
+
+        System.out.println("\nEndpoints:");
+        System.out.println(analyzer.countEndpoints());
+
+        System.out.println("\nErrors:");
+        analyzer.getErrorLogs().forEach(System.out::println);
     }
 }

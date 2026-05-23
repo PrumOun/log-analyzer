@@ -3,33 +3,91 @@ package com.odev.loganalyzer.parser;
 import com.odev.loganalyzer.model.LogEntry;
 import com.odev.loganalyzer.service.LogAnalyzer;
 import com.odev.loganalyzer.util.FileReaderUtil;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class LogAnalyzerTest {
 
-    @Test
-    void shouldAnalyzeLogs() {
-        // Given
-        LogParser parser = new LogParser();
+    private LogAnalyzer analyzer;
+
+    @BeforeEach
+    void setUp() {
         FileReaderUtil reader = new FileReaderUtil();
-        List<LogEntry> logEntries = reader.readLogs("sample.log");
-        LogAnalyzer analyzer = new LogAnalyzer(logEntries);
+        List<LogEntry> logs = reader.readLogs("sample.log");
 
-        // When
+        analyzer = new LogAnalyzer(logs);
+    }
+
+    @Test
+    void shouldCountTotalRequests() {
         long totalRequests = analyzer.countTotalRequest();
-        Map<Integer, Long> statusCodeCounts = analyzer.countStatusCodes();
-        Map<String, Long> requestsByIp = analyzer.countRequestsByIpAddress();
 
-        // Then
-        assertEquals(4, totalRequests);;
-        assertEquals(1, statusCodeCounts.get(200));
-        assertEquals(3, statusCodeCounts.get(404));
-        assertEquals(1, statusCodeCounts.get(500));
-        assertEquals(2, requestsByIp.get("192.168.1.10"));
+        assertEquals(5, totalRequests);
+    }
+
+    @Test
+    void shouldCountStatusCodes() {
+        Map<Integer, Long> statusCounts =
+                analyzer.countStatusCodes();
+
+        assertEquals(1, statusCounts.get(200));
+        assertEquals(3, statusCounts.get(404));
+    }
+
+    @Test
+    void shouldCountRequestsByIp() {
+        Map<String, Long> ipCounts =
+                analyzer.countRequestsByIpAddress();
+
+        assertEquals(2, ipCounts.get("192.168.1.10"));
+        assertEquals(3, ipCounts.get("10.0.0.1"));
+    }
+
+    @Test
+    void shouldReturnTopIps() {
+        List<Map.Entry<String, Long>> topIps =
+                analyzer.getTopEndpoints(5);
+
+        assertFalse(topIps.isEmpty());
+
+        assertEquals(
+                "192.168.1.10",
+                topIps.get(1).getKey()
+        );
+    }
+
+    @Test
+    void shouldCountEndpoints() {
+        Map<String, Long> endpointCounts =
+                analyzer.countEndpoints();
+
+        assertEquals(
+                1,
+                endpointCounts.get("/api/products")
+        );
+
+        assertEquals(
+                4,
+                endpointCounts.get("/api/login")
+        );
+    }
+
+    @Test
+    void shouldReturnOnlyErrorLogs() {
+        List<LogEntry> errorLogs =
+                analyzer.getErrorLogs();
+
+        assertEquals(4, errorLogs.size());
+
+        assertEquals(
+                404,
+                errorLogs.get(0).getResponseCode()
+        );
     }
 }

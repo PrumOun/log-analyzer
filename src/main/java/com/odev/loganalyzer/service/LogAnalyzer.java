@@ -26,4 +26,24 @@ public class LogAnalyzer {
         return logEntries.stream()
                 .collect(Collectors.groupingBy(LogEntry::getIpAddress, Collectors.counting()));
     }
+
+    public List<Map.Entry<String, Long>> getTopEndpoints(int limits){
+        return countRequestsByIpAddress().entrySet()
+                .stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .limit(limits)
+                .toList();
+    }
+
+    public Map<String, Long> countEndpoints(){
+        return logEntries.stream()
+                .collect(Collectors.groupingBy(LogEntry::getEndpoint, Collectors.counting()));
+    }
+
+    public List<LogEntry> getErrorLogs(){
+        return logEntries.stream()
+                .filter(log -> log.getResponseCode() >= 400)
+                .toList();
+    }
+
 }
