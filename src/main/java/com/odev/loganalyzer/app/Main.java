@@ -1,8 +1,8 @@
 package com.odev.loganalyzer.app;
 
 import com.odev.loganalyzer.model.LogEntry;
-import com.odev.loganalyzer.service.LogAnalyzer;
 import com.odev.loganalyzer.service.MultiThreadedLogAnalyzer;
+import com.odev.loganalyzer.util.FakeLogGenerator;
 import com.odev.loganalyzer.util.FileReaderUtil;
 
 import java.util.List;
@@ -10,8 +10,14 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
+
+        FakeLogGenerator generator =
+                new FakeLogGenerator();
+
+        generator.generateFakeLogs("sample.log", 100);
+
         FileReaderUtil reader = new FileReaderUtil();
-        List<LogEntry> logEntries = reader.readLogs("sample.log");
+        List<LogEntry> logEntries = reader.readLogsFromResource("sample.log");
 
 //        LogAnalyzer analyzer = new LogAnalyzer(logEntries);
 //

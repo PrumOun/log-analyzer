@@ -7,13 +7,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileReaderUtil {
     private final LogParser logParser = new LogParser();
 
-    public List<LogEntry> readLogs(String filePath){
+    public List<LogEntry> readLogsFromResource(String filePath){
         List<LogEntry> logEntries = new ArrayList<>();
 
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(filePath);
@@ -23,6 +25,21 @@ public class FileReaderUtil {
         }
 
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                logParser.parse(line).ifPresent(logEntries::add);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading file", e);
+        }
+
+        return logEntries;
+    }
+
+    public List<LogEntry> readLogsFromPath(String filePath) {
+        List<LogEntry> logEntries = new ArrayList<>();
+
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 logParser.parse(line).ifPresent(logEntries::add);

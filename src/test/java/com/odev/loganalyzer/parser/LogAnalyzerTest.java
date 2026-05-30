@@ -19,7 +19,7 @@ public class LogAnalyzerTest {
     @BeforeEach
     void setUp() {
         FileReaderUtil reader = new FileReaderUtil();
-        List<LogEntry> logs = reader.readLogs("sample.log");
+        List<LogEntry> logs = reader.readLogsFromResource("sample.log");
 
         analyzer = new LogAnalyzer(logs);
     }

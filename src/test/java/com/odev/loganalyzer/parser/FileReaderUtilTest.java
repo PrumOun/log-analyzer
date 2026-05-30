@@ -14,7 +14,7 @@ public class FileReaderUtilTest {
     void shouldReadAndParseLogFile() {
         FileReaderUtil reader = new FileReaderUtil();
 
-        List<LogEntry> logs = reader.readLogs("sample.log");
+        List<LogEntry> logs = reader.readLogsFromResource("sample.log");
 
         assertNotNull(logs);
         assertEquals(5, logs.size()); // invalid line ignored
