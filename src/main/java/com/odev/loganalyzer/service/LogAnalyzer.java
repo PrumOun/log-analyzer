@@ -1,5 +1,7 @@
 package com.odev.loganalyzer.service;
 
+import com.odev.loganalyzer.model.AnalysisResult;
+import com.odev.loganalyzer.model.ErrorResult;
 import com.odev.loganalyzer.model.LogEntry;
 
 import java.util.List;
@@ -8,6 +10,25 @@ import java.util.stream.Collectors;
 
 public class LogAnalyzer {
     private final List<LogEntry> logEntries;
+
+    public AnalysisResult generateReport() {
+        return new AnalysisResult(
+                countTotalRequest(),
+                countRequestsByIpAddress(),
+                countStatusCodes(),
+                countEndpoints(),
+                getTopEndpoints(5)
+        );
+    }
+
+    public ErrorResult generateErrorReport() {
+        return new ErrorResult(
+                getErrorLogs().size(),
+                countErrorByStatusCode(),
+                countErrorByEndpoint(),
+                topErrorIps()
+        );
+    }
 
     public LogAnalyzer(List<LogEntry> logEntries) {
         this.logEntries = logEntries;
@@ -44,6 +65,27 @@ public class LogAnalyzer {
         return logEntries.stream()
                 .filter(log -> log.getResponseCode() >= 400)
                 .toList();
+    }
+
+    public Map<Integer, Long> countErrorByStatusCode(){
+        return logEntries.stream()
+                .filter(log -> log.getResponseCode() >= 400)
+                .collect(Collectors.groupingBy(LogEntry::getResponseCode, Collectors.counting()));
+    }
+
+    public Map<String, Long> countErrorByEndpoint(){
+        return logEntries.stream()
+                .filter(log -> log.getResponseCode() >= 400)
+                .collect(Collectors.groupingBy(LogEntry::getEndpoint, Collectors.counting()));
+    }
+
+    public Map<String, Long> topErrorIps() {
+        return logEntries.stream()
+                .filter(log -> log.getResponseCode() >= 400)
+                .collect(Collectors.groupingBy(
+                        LogEntry::getIpAddress,
+                        Collectors.counting()
+                ));
     }
 
 }
