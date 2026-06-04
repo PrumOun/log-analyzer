@@ -56,10 +56,17 @@ public class ReportGenerator {
     private <T> void printMap(Map<T, Long> map) {
         map.entrySet().stream()
                 .sorted(Map.Entry.<T, Long>comparingByValue().reversed())
-                .forEach(entry ->
+                .forEach(entry -> {
+
+                    if (entry.getKey() instanceof Integer) {
+                        System.out.printf("HTTP %s -> %d%n",
+                                entry.getKey(),
+                                entry.getValue());
+                    } else {
                         System.out.printf("%-30s %d%n",
                                 entry.getKey(),
-                                entry.getValue())
-                );
+                                entry.getValue());
+                    }
+                });
     }
 }
