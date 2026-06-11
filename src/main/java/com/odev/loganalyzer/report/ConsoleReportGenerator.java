@@ -1,11 +1,11 @@
-package com.odev.loganalyzer.service;
+package com.odev.loganalyzer.report;
 
 import com.odev.loganalyzer.model.AnalysisResult;
 import com.odev.loganalyzer.model.ErrorResult;
 
 import java.util.Map;
 
-public class ReportGenerator {
+public class ConsoleReportGenerator {
 
     public void generateConsoleReport(AnalysisResult result){
         System.out.println();
@@ -33,7 +33,7 @@ public class ReportGenerator {
         System.out.println("================================");
     }
 
-    public void printErrorReport(ErrorResult report) {
+    public void generateErrorConsoleReport(ErrorResult report) {
 
         System.out.println("\n=================================");
         System.out.println("        ERROR REPORT");

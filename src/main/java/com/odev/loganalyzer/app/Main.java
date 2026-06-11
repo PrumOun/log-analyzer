@@ -3,14 +3,13 @@ package com.odev.loganalyzer.app;
 import com.odev.loganalyzer.model.AnalysisResult;
 import com.odev.loganalyzer.model.ErrorResult;
 import com.odev.loganalyzer.model.LogEntry;
+import com.odev.loganalyzer.report.CsvReportGenerator;
+import com.odev.loganalyzer.report.JsonReportGenerator;
 import com.odev.loganalyzer.service.LogAnalyzer;
-import com.odev.loganalyzer.service.MultiThreadedLogAnalyzer;
-import com.odev.loganalyzer.service.ReportGenerator;
-import com.odev.loganalyzer.util.FakeLogGenerator;
+import com.odev.loganalyzer.report.ConsoleReportGenerator;
 import com.odev.loganalyzer.util.FileReaderUtil;
 
 import java.util.List;
-import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
@@ -72,10 +71,23 @@ public class Main {
         ErrorResult errorResult =
                 analyzer.generateErrorReport();
 
-        ReportGenerator reportGenerator =
-                new ReportGenerator();
+        ConsoleReportGenerator reportGenerator =
+                new ConsoleReportGenerator();
 
         reportGenerator.generateConsoleReport(result);
-        reportGenerator.printErrorReport(errorResult);
+        reportGenerator.generateErrorConsoleReport(errorResult);
+
+        JsonReportGenerator json = new JsonReportGenerator();
+
+        String output = json.generateJsonReport(result);
+        String errorOutput = json.generateErrorJsonReport(errorResult);
+
+        System.out.println(output);
+        System.out.println(errorOutput);
+
+        CsvReportGenerator csv = new CsvReportGenerator();
+
+        csv.generateCsvReport(result, "ip-report.csv");
+        csv.generateErrorCsvReport(errorResult, "error-report.csv");
     }
 }
