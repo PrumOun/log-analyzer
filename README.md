@@ -97,7 +97,7 @@ src
 ├── main
 │   └── java
 │       └── com
-│           └── yourname
+│           └── odev
 │               └── loganalyzer
 │
 │                   ├── model
@@ -111,21 +111,33 @@ src
 │                   ├── service
 │                   │   ├── LogAnalyzer
 │                   │   ├── MultiThreadedLogAnalyzer
-│                   │   └── ReportGenerator
 │                   │
 │                   ├── report
 │                   │   ├── JsonReportGenerator
 │                   │   └── CsvReportGenerator
+│                   │   ├── ConsoleReportGenerator
 │                   │
 │                   ├── util
 │                   │   └── FileReaderUtil
+│                   │   └── FakeLogGenerator
 │                   │
 │                   └── app
 │                       └── Main
 │
 └── test
     └── java
-        └── ...
+        └── com
+            └── odev
+                └── loganalyzer
+                    ├── parser
+                    │   └── LogParserTest
+                    │
+                    ├── service
+                    │   └── LogAnalyzerTest
+                    │   └── MultiThreadedLogAnalyzerTest
+                    │
+                    └── util
+                         └── FileReaderUtilTest
 ```
 
 ---

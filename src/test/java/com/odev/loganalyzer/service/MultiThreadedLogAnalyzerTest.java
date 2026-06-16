@@ -1,8 +1,6 @@
-package com.odev.loganalyzer.parser;
+package com.odev.loganalyzer.service;
 
 import com.odev.loganalyzer.model.LogEntry;
-import com.odev.loganalyzer.service.LogAnalyzer;
-import com.odev.loganalyzer.service.MultiThreadedLogAnalyzer;
 import com.odev.loganalyzer.util.FileReaderUtil;
 import org.junit.jupiter.api.Test;
 
