@@ -1,0 +1,24 @@
+ERROR REPORT
+SUMMARY
+Metric,Value
+Total Errors,61
+
+ERRORS BY STATUS CODE
+Status Code,Error Count
+404,28
+400,23
+500,10
+
+TOP ERROR ENDPOINTS
+Endpoint,Error Count
+/api/login,21
+/api/products,15
+/api/orders,13
+/api/users,12
+
+TOP ERROR IPS
+IP Address,Error Count
+172.16.0.1,19
+192.168.1.10,18
+192.168.1.1,14
+10.0.0.1,10

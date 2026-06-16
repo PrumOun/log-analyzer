@@ -1,0 +1,26 @@
+LOG ANALYSIS REPORT
+SUMMARY
+Metric,Value
+Total Requests,100
+
+TOP IP ADDRESSES
+IP Address,Request Count
+192.168.1.10,31
+172.16.0.1,30
+10.0.0.1,20
+192.168.1.1,19
+
+STATUS CODES
+Status Code,Request Count
+404,28
+400,23
+200,21
+201,18
+500,10
+
+ENDPOINTS
+Endpoint,Request Count
+/api/login,27
+/api/orders,27
+/api/products,25
+/api/users,21
